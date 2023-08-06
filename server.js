@@ -6,7 +6,7 @@ const server = http.createServer((req, res) => {
   const method = req.method;
 
   if (url === "/") {
-    return fs.readFile("message.txt", { encoding: "utf-8" }, (err, data) => {
+    fs.readFile("message.txt", "utf-8", (err, data) => {
       if (err) {
         console.log(err);
       }
@@ -15,14 +15,12 @@ const server = http.createServer((req, res) => {
       res.write("<head><title>Enter Message</title></head>");
       res.write(`<body>${data}</body>`);
       res.write(
-        "<body><form action='/message' method='POST'> <input type='text' name='message'> </input><button type='submit'> Send</button> </form> </body>"
+        "<body><form action='/message' method='POST'> <input type='text' name='message'/><button type='submit'> Send</button> </form> </body>"
       );
       res.write("</html>");
       return res.end();
     });
-  }
-
-  if (url === "/message" && method === "POST") {
+  } else if (url === "/message" && method === "POST") {
     const body = [];
     req.on("data", (chunck) => {
       body.push(chunck);
